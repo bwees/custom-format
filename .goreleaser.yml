@@ -1,0 +1,33 @@
+version: 2
+project_name: custom-formatter
+
+before:
+  hooks:
+    - sh -c 'pnpm pkg set version="{{ .Version }}"'
+    - pnpm install --frozen-lockfile
+    - pnpm run build
+    - sh -c 'pnpm dlx @vscode/vsce package --no-dependencies -o "custom-formatter-{{ .Version }}.vsix"'
+
+builds:
+  - skip: true
+
+archives:
+  - id: vsix
+    meta: true
+    name_template: "{{ .ProjectName }}_{{ .Version }}"
+
+release:
+  extra_files:
+    - glob: "*.vsix"
+  draft: false
+  prerelease: auto
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - "^chore"
+      - "^docs"
+      - "^test"
+      - "^ci"
