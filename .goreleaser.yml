@@ -1,5 +1,6 @@
 version: 2
 project_name: custom-formatter
+dist: .goreleaser
 
 before:
   hooks:
