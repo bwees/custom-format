@@ -19,6 +19,6 @@ jobs:
       - uses: jdx/mise-action@v2
 
       - name: Release
-        run: goreleaser release --clean
+        run: goreleaser release --clean --skip=archive
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

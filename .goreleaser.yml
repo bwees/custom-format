@@ -12,11 +12,6 @@ before:
 builds:
   - skip: true
 
-archives:
-  - id: vsix
-    meta: true
-    name_template: "{{ .ProjectName }}_{{ .Version }}"
-
 release:
   extra_files:
     - glob: "*.vsix"
