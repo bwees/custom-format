@@ -18,54 +18,26 @@
     "configuration": {
       "title": "Custom Formatter",
       "properties": {
-        "customFormatter.commands": {
-          "type": "object",
-          "default": {},
-          "markdownDescription": "Map of VS Code language id to formatter command. Available template variables: `${file}`, `${fileName}`, `${fileDirname}`, `${fileExtname}`, `${fileBasenameNoExtension}`, `${workspaceFolder}`.",
-          "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "command": {
-                "type": "string",
-                "description": "Shell command to run. When useStdin is false, ${file} is replaced with a temp file path that the command should modify in place."
-              },
-              "useStdin": {
-                "type": "boolean",
-                "default": false,
-                "description": "If true, buffer contents are piped to the command's stdin and stdout is used as the formatted result. If false, the file is modified in place via ${file}."
-              },
-              "cwd": {
-                "type": "string",
-                "description": "Working directory for the command. Supports the same template variables. Defaults to the file's directory."
-              }
-            },
-            "required": [
-              "command"
-            ]
-          }
-        },
-        "customFormatter.autoRegister": {
-          "type": "boolean",
-          "default": true,
-          "description": "Automatically set this extension as editor.defaultFormatter for configured languages so you only need to declare them in customFormatter.commands."
-        },
-        "customFormatter.autoRegisterTarget": {
+        "customFormatter.command": {
           "type": "string",
-          "enum": [
-            "global",
-            "workspace"
-          ],
-          "default": "global",
-          "description": "Where to write the auto-registered defaultFormatter setting."
+          "default": "",
+          "scope": "language-overridable",
+          "markdownDescription": "Shell command to run as the formatter. If `${file}` is not present in the string, the temp-file path is appended as the final argument. Template variables: `${file}`, `${fileName}`, `${fileDirname}`, `${fileExtname}`, `${fileBasenameNoExtension}`, `${workspaceFolder}`. Set inside a language scope, e.g. `\"[terraform]\": { \"customFormatter.command\": \"tofu fmt\" }`."
+        },
+        "customFormatter.useStdin": {
+          "type": "boolean",
+          "default": false,
+          "scope": "language-overridable",
+          "description": "If true, buffer contents are piped to the command's stdin and stdout is used as the formatted result. If false, the buffer is written to a temp file the command modifies in place."
+        },
+        "customFormatter.cwd": {
+          "type": "string",
+          "default": "",
+          "scope": "language-overridable",
+          "markdownDescription": "Working directory for the command. Supports the same template variables. Defaults to the temp file's directory in file mode, and the source file's directory in stdin mode."
         }
       }
-    },
-    "commands": [
-      {
-        "command": "customFormatter.syncDefaultFormatters",
-        "title": "Custom Formatter: Sync Default Formatter Associations"
-      }
-    ]
+    }
   },
   "scripts": {
     "build": "tsc -p .",
